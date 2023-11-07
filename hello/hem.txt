@@ -1,0 +1,55 @@
+package com.codility.selenium.candidate;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import com.codility.selenium.tests.WebDriverTestCase;
+
+public class Solution extends WebDriverTestCase {
+    @Test
+    public void testLoginFormPresent() {
+      webDriver.findElement(By.id("email-input"));
+      webDriver.findElement(By.id("password-input"));
+      webDriver.findElement(By.id("login-button"));
+    }    
+    @Test
+    public void testvalidcredentals() { 
+       webDriver.findElement(By.id("email-input")).sendKeys("login@codility.com");
+       webDriver.findElement(By.id("password-input")).sendKeys("password");
+       webDriver.findElement(By.id("login-button")).click();
+      WebElement successMessage = webDriver.findElement(By.xpath("//div[@class=\"message success\"]"));
+       Assert.assertNotNull(successMessage);       
+       }
+   @Test
+    public void testinvalidcredentals() { 
+       webDriver.findElement(By.id("email-input")).sendKeys("unkown@codility.com");
+       webDriver.findElement(By.id("password-input")).sendKeys("password");
+       webDriver.findElement(By.id("login-button")).click();
+      WebElement errorMessage = webDriver.findElement(By.xpath("//div[@class=\"message error\"]"));
+       Assert.assertNotNull(errorMessage);       
+       }
+
+   @Test
+      public void testEmailInvalidCredentialsAndErrorMessage() {
+         webDriver.findElement(By.id("email-input")).sendKeys("unknowncodility.com");;
+         webDriver.findElement(By.id("password-input")).sendKeys("password");
+         webDriver.findElement(By.id("login-button")).click();
+         WebElement errorMessage = webDriver.findElement(By.xpath("//div[@class=\"validation error\"]"));
+         Assert.assertNotNull(errorMessage);
+      }
+   @Test  
+      public void testWithEmptyCredentialsAndErrorMessage() {
+         webDriver.findElement(By.id("email-input")).clear();
+         webDriver.findElement(By.id("password-input")).clear();
+         webDriver.findElement(By.id("login-button")).click();
+         WebElement errorMessage = webDriver.findElement(By.xpath("//*[@id=\"messages\"]/div[1]"));
+         WebElement errorMessage1 = webDriver.findElement(By.xpath("//*[@id=\"messages\"]/div[2]"));
+         Assert.assertNotNull(errorMessage);
+         Assert.assertNotNull(errorMessage1);
+      }
+    }
+   
